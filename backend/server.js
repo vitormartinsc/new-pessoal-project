@@ -58,8 +58,58 @@ app.post('/api/upload', upload.single('foto'), (req, res) => {
   });
 });
 
-const geminiRouter = require('./gemini');
-app.use(geminiRouter);
+// Armazena mensagem/foto do dia em arquivo
+const cachePath = path.join(__dirname, 'mensagem_do_dia.json');
+
+function getHojeString() {
+  const hoje = new Date();
+  return hoje.toISOString().slice(0, 10); // yyyy-mm-dd
+}
+
+function lerCacheDoDia() {
+  if (fs.existsSync(cachePath)) {
+    try {
+      const cache = JSON.parse(fs.readFileSync(cachePath, 'utf-8'));
+      if (cache.dataDoDia === getHojeString()) {
+        return cache;
+      }
+    } catch (e) {}
+  }
+  return null;
+}
+
+function salvarCacheDoDia(mensagem, foto) {
+  const cache = {
+    mensagemDoDia: mensagem,
+    fotoDoDia: foto,
+    dataDoDia: getHojeString()
+  };
+  fs.writeFileSync(cachePath, JSON.stringify(cache, null, 2));
+}
+
+app.post('/api/mensagem-romantica', async (req, res) => {
+  try {
+    const cache = lerCacheDoDia();
+    if (cache) {
+      return res.json({ mensagem: cache.mensagemDoDia, foto: cache.fotoDoDia });
+    }
+    const fotos = JSON.parse(fs.readFileSync(fotosJsonPath, 'utf-8'));
+    if (!fotos.length) return res.status(404).json({ error: 'Nenhuma foto encontrada.' });
+    const foto = fotos[Math.floor(Math.random() * fotos.length)];
+    const { gerar_mensagem } = require('./mensagem_gpt4_node');
+    try {
+      const mensagem = await gerar_mensagem(foto.caption);
+      salvarCacheDoDia(mensagem.trim(), foto);
+      res.json({ mensagem: mensagem.trim(), foto });
+    } catch (err) {
+      console.error('Erro ao gerar mensagem:', err);
+      res.status(500).json({ error: 'Erro ao gerar mensagem.', details: err.message });
+    }
+  } catch (e) {
+    console.error('Erro interno:', e);
+    res.status(500).json({ error: 'Erro interno.', details: e.message });
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);
