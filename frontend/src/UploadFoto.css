@@ -1,0 +1,44 @@
+.upload-foto-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #fff0f6;
+  border-radius: 16px;
+  padding: 24px 16px;
+  margin: 32px 0;
+  box-shadow: 0 2px 8px rgba(200, 24, 91, 0.08);
+  max-width: 400px;
+}
+
+.upload-foto-form input[type="file"] {
+  margin-bottom: 12px;
+}
+
+.upload-foto-form input[type="text"] {
+  margin-bottom: 12px;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #c2185b33;
+  width: 100%;
+}
+
+.upload-foto-form button {
+  background: #c2185b;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-bottom: 8px;
+}
+
+.upload-foto-form button:hover {
+  background: #ad1457;
+}
+
+.status {
+  font-size: 0.95rem;
+  color: #ad1457;
+  margin-top: 6px;
+}
