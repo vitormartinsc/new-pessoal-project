@@ -138,6 +138,18 @@
   box-shadow: 0 1px 4px #e91e6320;
 }
 
+.caption-outside {
+  font-size: 1.08rem;
+  color: #ad1457;
+  background: #fff0f6;
+  border-radius: 8px;
+  padding: 8px 16px;
+  text-align: center;
+  margin: 8px auto 18px auto;
+  box-shadow: 0 1px 4px #e91e6320;
+  max-width: 340px;
+}
+
 .logo-romantica {
   display: flex;
   align-items: center;
@@ -163,4 +175,87 @@
   color: #c2185b;
   letter-spacing: 2px;
   font-family: 'Pacifico', 'Caveat', cursive, sans-serif;
+}
+
+.moldura-floral-react {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 340px;
+  height: 340px;
+  margin-bottom: 18px;
+  border-radius: 32px;
+  border: 6px double #f8bbd0;
+  box-shadow: 0 4px 32px 0 #e91e6340, 0 1.5px 0 #fff inset;
+  background: linear-gradient(135deg, #fff0f6 60%, #ffe0ec 100%);
+}
+.foto-romantica-moldada {
+  width: 100%;
+  height: 100%;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 2px 16px rgba(200, 24, 91, 0.13);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #fff;
+  z-index: 1;
+}
+.foto-romantica-moldada img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px 20px 16px 16px;
+  margin-bottom: 0;
+  border: none;
+}
+.moldura-floral-react .caption {
+  width: 90%;
+  margin: 8px auto 0 auto;
+  position: static;
+  background: #fff0f6;
+  color: #ad1457;
+  border-radius: 8px;
+  padding: 8px 16px;
+  text-align: center;
+  box-shadow: 0 1px 4px #e91e6320;
+  z-index: 2;
+}
+.flor-canto {
+  position: absolute;
+  font-size: 2.1rem;
+  z-index: 3;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 6px #e91e6340);
+}
+.flor-canto-tl { top: -18px; left: -18px; }
+.flor-canto-tr { top: -18px; right: -18px; }
+.flor-canto-bl { bottom: -18px; left: -18px; }
+.flor-canto-br { bottom: -18px; right: -18px; }
+.flor-lateral {
+  position: absolute;
+  font-size: 1.7rem;
+  z-index: 3;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 6px #e91e6340);
+}
+.flor-lateral-t { top: -22px; left: 50%; transform: translateX(-50%); }
+.flor-lateral-b { bottom: -22px; left: 50%; transform: translateX(-50%); }
+.flor-lateral-l { left: -22px; top: 50%; transform: translateY(-50%); }
+.flor-lateral-r { right: -22px; top: 50%; transform: translateY(-50%); }
+@media (max-width: 500px) {
+  .moldura-floral-react {
+    width: 90vw;
+    height: 90vw;
+    max-width: 320px;
+    max-height: 320px;
+  }
+  .foto-romantica-moldada {
+    width: 96%;
+    height: 96%;
+  }
+  .flor-canto, .flor-lateral {
+    font-size: 1.2rem;
+  }
 }
