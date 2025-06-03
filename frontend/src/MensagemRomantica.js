@@ -2,6 +2,12 @@ import React, { useEffect, useState } from 'react';
 import './MensagemRomantica.css';
 import { FaHeart } from 'react-icons/fa';
 
+// Google Fonts para fonte romântica
+const link = document.createElement('link');
+link.href = 'https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap';
+link.rel = 'stylesheet';
+document.head.appendChild(link);
+
 function MensagemRomantica() {
   const [mensagemAtual, setMensagemAtual] = useState('');
   const [fotoAtual, setFotoAtual] = useState(null);
@@ -23,17 +29,38 @@ function MensagemRomantica() {
 
   useEffect(() => {
     buscarMensagem();
+    // Gera corações, pétalas e patinhas animadas (mais corações, menos frequência)
+    const elementos = [];
+    const coracoes = ['❤️', '💖', '💕', '💘', '💞'];
+    const petalasEmojis = ['🌸', '🌺', '🌷', '💮', '🥀'];
+    const patinhas = ['🐾', '🐶'];
+    const total = 12; // Menos elementos para menor frequência
+    for (let i = 0; i < total; i++) {
+      let emoji;
+      if (i % 2 === 0) emoji = coracoes[Math.floor(Math.random() * coracoes.length)];
+      else if (i % 4 === 1) emoji = patinhas[Math.floor(Math.random() * patinhas.length)];
+      else emoji = petalasEmojis[Math.floor(Math.random() * petalasEmojis.length)];
+      const left = Math.random() * 100;
+      const delay = Math.random() * 12;
+      elementos.push(`<span class='petala' style='left:${left}vw; animation-delay:${delay}s;'>${emoji}</span>`);
+    }
+    const bg = document.querySelector('.petalas-bg');
+    if (bg) bg.innerHTML = elementos.join('');
   }, []);
 
   return (
     <div className="mensagem-romantica-bg">
+      <div className="petalas-bg"></div>
       <div className="mensagem-romantica-container">
-        <div className="logo-romantica">
+        <div className="logo-romantica fonte-romantica">
           <span className="logo-heart">❤</span>
           <span className="logo-text">Roberta & Vitor</span>
           <span className="logo-heart">❤</span>
         </div>
-        <div className="header-romantica">
+        <div className="header-romantica fonte-romantica">
+          <FaHeart className="heart-icon" />
+          <h2>{`Mensagem do Dia (${new Date().toLocaleDateString('pt-BR')})`}</h2>
+          <FaHeart className="heart-icon" />
         </div>
         {fotoAtual && (
           <div className="moldura-floral-react">

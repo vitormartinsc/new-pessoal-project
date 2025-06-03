@@ -1,3 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&display=swap');
+
+body, html, .mensagem-romantica-bg, .mensagem-romantica, .caption, .caption-outside, .btn-romantica, .foto-romantica-moldada, .moldura-floral-react, .mensagem-romantica-container {
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+}
+
+.mensagem-romantica, .caption, .caption-outside {
+  font-size: 1.18rem;
+  font-weight: 400;
+  letter-spacing: 0.2px;
+}
+
+.btn-romantica {
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  font-weight: 600;
+  font-size: 1.08rem;
+  letter-spacing: 0.5px;
+}
+
 .mensagem-romantica-bg {
   min-height: 100vh;
   width: 100vw;
@@ -56,14 +75,17 @@
   align-items: center;
   justify-content: center;
   min-height: 70vh;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.35);
   border-radius: 24px;
   padding: 48px 24px 32px 24px;
-  box-shadow: 0 6px 32px rgba(255, 0, 100, 0.10);
+  box-shadow: 0 6px 32px 0 rgba(255, 0, 100, 0.10), 0 1.5px 0 #fff inset;
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  border: 1.5px solid rgba(255, 182, 193, 0.25);
   max-width: 600px;
   margin: 40px auto;
   position: relative;
-  z-index: 1;
+  z-index: 10;
 }
 
 .mensagem-romantica {
@@ -244,6 +266,78 @@
 .flor-lateral-b { bottom: -22px; left: 50%; transform: translateX(-50%); }
 .flor-lateral-l { left: -22px; top: 50%; transform: translateY(-50%); }
 .flor-lateral-r { right: -22px; top: 50%; transform: translateY(-50%); }
+
+.fonte-romantica {
+  font-family: 'Great Vibes', 'Pacifico', 'Caveat', cursive, sans-serif !important;
+  letter-spacing: 1.5px;
+}
+
+.petalas-bg {
+  pointer-events: none;
+  position: absolute;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  z-index: 50;
+  overflow: hidden;
+}
+.petalas-bg .petala {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  opacity: 1;
+  animation: cairPetala 8s linear infinite;
+  pointer-events: none;
+  filter: none;
+  text-shadow: 0 2px 8px #e91e63, 0 0 2px #fff;
+  font-size: 2rem;
+  z-index: 100;
+}
+@keyframes cairPetala {
+  0% {
+    transform: translateY(-40px) rotate(0deg) scale(1);
+    opacity: 0.95;
+  }
+  80% {
+    opacity: 0.95;
+  }
+  100% {
+    transform: translateY(100vh) rotate(120deg) scale(0.8);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .petalas-bg .petala {
+    width: 22px;
+    height: 22px;
+    font-size: 1.2rem;
+    opacity: 0.85;
+    text-shadow: 0 1px 3px #e91e63, 0 0 1px #fff;
+  }
+  .moldura-floral-react {
+    width: 96vw;
+    height: 96vw;
+    max-width: 98vw;
+    max-height: 98vw;
+    min-width: 180px;
+    min-height: 180px;
+  }
+  .caption-outside {
+    max-width: 96vw;
+    font-size: 0.98rem;
+    padding: 7px 6vw;
+  }
+  .mensagem-romantica-container {
+    padding: 18px 2vw 18px 2vw;
+    min-height: 0;
+  }
+  .logo-romantica {
+    font-size: 1.3rem;
+  }
+  .header-romantica h2 {
+    font-size: 1.1rem;
+  }
+}
+
 @media (max-width: 500px) {
   .moldura-floral-react {
     width: 90vw;
