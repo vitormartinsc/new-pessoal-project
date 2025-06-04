@@ -6,7 +6,7 @@ import './UploadFoto.css';
 
 function App() {
   return (
-    <div className="App">
+    <div className="App" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: 'none' }}>
       <MensagemRomantica />
       <UploadFoto />
     </div>

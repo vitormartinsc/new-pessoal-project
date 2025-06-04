@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './UploadFoto.css';
+import { FaCloudUploadAlt } from 'react-icons/fa';
 
 function UploadFoto({ onUpload }) {
   const [file, setFile] = useState(null);
@@ -43,11 +44,30 @@ function UploadFoto({ onUpload }) {
   };
 
   return (
-    <form className="upload-foto-form" onSubmit={handleSubmit}>
+    <form className="upload-foto-form centralizada" onSubmit={handleSubmit}>
       <h3>Enviar nova foto</h3>
-      <input type="file" accept="image/*" onChange={handleFileChange} />
-      <input type="text" placeholder="Legenda" value={caption} onChange={handleCaptionChange} />
-      <button type="submit">Enviar</button>
+      <label htmlFor="upload-foto-input" className="custom-file-label">
+        Selecionar foto
+        <input
+          id="upload-foto-input"
+          type="file"
+          accept="image/png, image/jpeg, image/jpg, image/webp"
+          onChange={handleFileChange}
+          style={{ display: 'none' }}
+        />
+      </label>
+      <textarea
+        className="input-legenda"
+        placeholder="Legenda"
+        value={caption}
+        onChange={handleCaptionChange}
+        rows={3}
+        maxLength={300}
+        style={{ resize: 'vertical', minHeight: 48 }}
+      />
+      <button type="submit" className="btn-upload-foto">
+        <FaCloudUploadAlt style={{ marginRight: 8, fontSize: 20 }} /> Enviar
+      </button>
       <div className="status">{status}</div>
     </form>
   );
