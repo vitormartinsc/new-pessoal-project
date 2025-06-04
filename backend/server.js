@@ -38,6 +38,7 @@ const storage = multer.diskStorage({
   }
 });
 const upload = multer({ storage });
+const gerarMensagemUpload = multer();
 
 // Substituir leitura de fotos.json por consulta ao banco
 async function getFotos() {
@@ -121,7 +122,8 @@ app.post('/api/mensagem-romantica', async (req, res) => {
   }
 });
 
-app.post('/api/gerar-mensagem', express.urlencoded({ extended: true }), async (req, res) => {
+app.post('/api/gerar-mensagem', gerarMensagemUpload.none(), async (req, res) => {
+  // Suporte para form-data (usado pelo frontend)
   const caption = req.body.caption;
   if (!caption) {
     return res.status(400).json({ error: 'Legenda (caption) é obrigatória.' });
@@ -136,6 +138,25 @@ app.post('/api/gerar-mensagem', express.urlencoded({ extended: true }), async (r
   }
 });
 
+app.post('/api/salvar-exemplo', express.json(), async (req, res) => {
+  const { caption, mensagem } = req.body;
+  if (!caption || !mensagem) {
+    return res.status(400).json({ error: 'Caption e mensagem são obrigatórios.' });
+  }
+  try {
+    await pool.query(
+      'INSERT INTO exemplos (caption, mensagem) VALUES ($1, $2)',
+      [caption, mensagem]
+    );
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Erro ao salvar exemplo:', err);
+    res.status(500).json({ error: 'Erro ao salvar exemplo.', details: err.message });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
+
+// O dia em que enviei violetas para Roberta. Foi para ela colocar na clínica dela e lembrar do quanto gosto dela toda vez que ver a violeta

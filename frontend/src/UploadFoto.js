@@ -46,28 +46,55 @@ function UploadFoto({ onUpload }) {
         setStatus('Erro ao enviar a foto.');
       }
     } else if (modo === 'treinar') {
-      setStatus('Gerando mensagem...');
-      setLoadingAI(true);
-      setMensagemGerada('');
-      try {
-        const formData = new FormData();
-        formData.append('caption', caption);
-        // Envia apenas a legenda para o endpoint de geração
-        const res = await fetch('http://localhost:5000/api/gerar-mensagem', {
-          method: 'POST',
-          body: formData
-        });
-        if (res.ok) {
-          const data = await res.json();
-          setMensagemGerada(data.mensagem);
-          setStatus('Mensagem gerada! Você pode editar antes de salvar.');
-        } else {
+      if (!mensagemGerada) {
+        setStatus('Gerando mensagem...');
+        setLoadingAI(true);
+        setMensagemGerada('');
+        try {
+          const formData = new FormData();
+          formData.append('caption', caption);
+          // Envia apenas a legenda para o endpoint de geração
+          const res = await fetch('http://localhost:5000/api/gerar-mensagem', {
+            method: 'POST',
+            body: formData
+          });
+          if (res.ok) {
+            const data = await res.json();
+            setMensagemGerada(
+              data.mensagem
+                .replace(/Imagem:[^\n]*\n?/g, '')
+                .replace(/Mensagem:/g, '')
+                .trim()
+            );
+            setStatus('Mensagem gerada! Você pode editar antes de salvar.');
+          } else {
+            setStatus('Erro ao gerar mensagem.');
+          }
+        } catch (err) {
           setStatus('Erro ao gerar mensagem.');
         }
-      } catch (err) {
-        setStatus('Erro ao gerar mensagem.');
+        setLoadingAI(false);
+      } else {
+        // Salvar exemplo no backend
+        setStatus('Salvando exemplo...');
+        try {
+          const res = await fetch('http://localhost:5000/api/salvar-exemplo', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ caption, mensagem: mensagemGerada })
+          });
+          if (res.ok) {
+            setStatus('Exemplo salvo com sucesso!');
+            setFile(null);
+            setCaption('');
+            setMensagemGerada('');
+          } else {
+            setStatus('Erro ao salvar exemplo.');
+          }
+        } catch (err) {
+          setStatus('Erro ao salvar exemplo.');
+        }
       }
-      setLoadingAI(false);
     }
   };
 

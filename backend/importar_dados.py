@@ -11,9 +11,11 @@ DATABASE_URL = os.getenv('DATABASE_URL')
 # Caminhos dos arquivos
 fotos_path = os.path.join(os.path.dirname(__file__), 'fotos.json')
 mensagens_path = os.path.join(os.path.dirname(__file__), 'mensagem_do_dia.json')
+exemplos_path = os.path.join(os.path.dirname(__file__), 'exemplos.json')
 
 def criar_tabelas(cur):
     # Remove as tabelas se existirem
+    cur.execute('DROP TABLE IF EXISTS exemplos CASCADE;')
     cur.execute('DROP TABLE IF EXISTS mensagem_do_dia CASCADE;')
     cur.execute('DROP TABLE IF EXISTS fotos CASCADE;')
     # Cria as tabelas novamente
@@ -30,6 +32,13 @@ def criar_tabelas(cur):
             mensagem_do_dia TEXT NOT NULL,
             foto_do_dia JSONB NOT NULL,
             data_do_dia DATE UNIQUE NOT NULL
+        );
+    ''')
+    cur.execute('''
+        CREATE TABLE exemplos (
+            id SERIAL PRIMARY KEY,
+            caption TEXT NOT NULL,
+            mensagem TEXT NOT NULL
         );
     ''')
 
@@ -90,6 +99,22 @@ def importar_mensagens(cur):
         )
     print('Mensagens do dia importadas com sucesso!')
 
+def importar_exemplos(cur):
+    if not os.path.exists(exemplos_path):
+        print('Arquivo exemplos.json não encontrado.')
+        return
+    with open(exemplos_path, 'r', encoding='utf-8') as f:
+        exemplos = json.load(f)
+    for exemplo in exemplos:
+        cur.execute(
+            """
+            INSERT INTO exemplos (caption, mensagem) VALUES (%s, %s)
+            ON CONFLICT DO NOTHING
+            """,
+            (exemplo.get('caption'), exemplo.get('mensagem'))
+        )
+    print('Exemplos importados com sucesso!')
+
 def main():
     if not DATABASE_URL:
         print('DATABASE_URL não definida no ambiente.')
@@ -101,6 +126,7 @@ def main():
                 criar_tabelas(cur)
                 importar_fotos(cur)
                 importar_mensagens(cur)
+                importar_exemplos(cur)
     finally:
         conn.close()
 
