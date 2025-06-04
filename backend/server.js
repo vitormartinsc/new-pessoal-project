@@ -121,6 +121,21 @@ app.post('/api/mensagem-romantica', async (req, res) => {
   }
 });
 
+app.post('/api/gerar-mensagem', express.urlencoded({ extended: true }), async (req, res) => {
+  const caption = req.body.caption;
+  if (!caption) {
+    return res.status(400).json({ error: 'Legenda (caption) é obrigatória.' });
+  }
+  try {
+    const { gerar_mensagem } = require('./mensagem_gpt4_node');
+    const mensagem = await gerar_mensagem(caption);
+    res.json({ mensagem: mensagem.trim() });
+  } catch (err) {
+    console.error('Erro ao gerar mensagem:', err);
+    res.status(500).json({ error: 'Erro ao gerar mensagem.', details: err.message });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);
 });

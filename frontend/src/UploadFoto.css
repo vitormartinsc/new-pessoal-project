@@ -1,3 +1,47 @@
+.upload-foto-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modo-toggle {
+  display: flex;
+  gap: 0;
+  margin-bottom: 0px;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.modo-btn {
+  background: #f8bbd0;
+  color: #ad1457;
+  border: none;
+  border-radius: 24px 0 0 24px;
+  padding: 12px 36px;
+  font-size: 1.08rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  outline: none;
+  box-shadow: none;
+}
+
+.modo-btn:last-child {
+  border-radius: 0 24px 24px 0;
+  border-left: 1px solid #f06292;
+}
+
+.modo-btn.ativo, .modo-btn:hover {
+  background: #e91e63;
+  color: #fff;
+}
+
+.modo-btn:not(.ativo) {
+  background: #f8bbd0;
+  color: #ad1457;
+}
+
 .upload-foto-form {
   display: flex;
   flex-direction: column;
@@ -7,6 +51,7 @@
   border-radius: 16px;
   padding: 28px 20px 22px 20px;
   margin: 24px 0;
+  margin-top: 18px;
   box-shadow: 0 2px 12px rgba(200, 24, 91, 0.13);
   max-width: 600px;
   width: 100%;
@@ -88,4 +133,38 @@
   box-sizing: border-box;
   min-width: 250px;
   max-width: 540px;
+}
+
+.file-info {
+  display: flex;
+  align-items: center;
+  background: #f8bbd0;
+  border-radius: 12px;
+  padding: 6px 14px;
+  margin-bottom: 12px;
+  font-size: 0.98rem;
+  color: #ad1457;
+  max-width: 90%;
+}
+
+.file-name {
+  margin-right: 10px;
+  word-break: break-all;
+}
+
+.remove-file-btn {
+  background: none;
+  border: none;
+  color: #c2185b;
+  font-size: 1.3rem;
+  cursor: pointer;
+  padding: 0 4px;
+  border-radius: 50%;
+  transition: background 0.15s;
+  line-height: 1;
+}
+
+.remove-file-btn:hover {
+  background: #f06292;
+  color: #fff;
 }
