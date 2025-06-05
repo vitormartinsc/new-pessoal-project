@@ -73,7 +73,7 @@ function MensagemRomantica() {
             <span className="flor-lateral flor-lateral-l">🥀</span>
             <span className="flor-lateral flor-lateral-r">🌼</span>
             <div className="foto-romantica-moldada">
-              <img src={`http://localhost:5000${fotoAtual.src}`} alt={fotoAtual.caption} />
+              <img src={fotoAtual.src} alt={fotoAtual.caption} />
             </div>
           </div>
         )}
