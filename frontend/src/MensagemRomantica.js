@@ -8,6 +8,8 @@ link.href = 'https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap';
 link.rel = 'stylesheet';
 document.head.appendChild(link);
 
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://new-pessoal-project.onrender.com';
+
 function MensagemRomantica() {
   const [mensagemAtual, setMensagemAtual] = useState('');
   const [fotoAtual, setFotoAtual] = useState(null);
@@ -20,7 +22,7 @@ function MensagemRomantica() {
   const buscarMensagem = async () => {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/mensagem-romantica', { method: 'POST' });
+      const res = await fetch(`${BACKEND_URL}/api/mensagem-romantica`, { method: 'POST' });
       const data = await res.json();
       setMensagemAtual(data.mensagem);
       setFotoAtual(data.foto);
@@ -80,7 +82,7 @@ function MensagemRomantica() {
     if (!fotoAtual || !mensagemAtual) return;
     if (positivo) {
       // Salva exemplo no backend
-      await fetch('http://localhost:5000/api/salvar-exemplo', {
+      await fetch(`${BACKEND_URL}/api/salvar-exemplo`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -97,7 +99,7 @@ function MensagemRomantica() {
 
   const handleEnviarEdicao = async () => {
     if (!fotoAtual || !mensagemEditada.trim()) return;
-    await fetch('http://localhost:5000/api/salvar-exemplo', {
+    await fetch(`${BACKEND_URL}/api/salvar-exemplo`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

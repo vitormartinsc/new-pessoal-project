@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import './UploadFoto.css';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 
+// Defina a URL do backend em uma variável de ambiente ou constante
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://new-pessoal-project.onrender.com';
+
 function UploadFoto({ onUpload }) {
   const [file, setFile] = useState(null);
   const [caption, setCaption] = useState('');
@@ -30,7 +33,7 @@ function UploadFoto({ onUpload }) {
       formData.append('caption', caption);
       setStatus('Enviando...');
       try {
-        const res = await fetch('http://localhost:5000/api/upload', {
+        const res = await fetch(`${BACKEND_URL}/api/upload`, {
           method: 'POST',
           body: formData,
         });
@@ -54,7 +57,7 @@ function UploadFoto({ onUpload }) {
           const formData = new FormData();
           formData.append('caption', caption);
           // Envia apenas a legenda para o endpoint de geração
-          const res = await fetch('http://localhost:5000/api/gerar-mensagem', {
+          const res = await fetch(`${BACKEND_URL}/api/gerar-mensagem`, {
             method: 'POST',
             body: formData
           });
@@ -78,7 +81,7 @@ function UploadFoto({ onUpload }) {
         // Salvar exemplo no backend
         setStatus('Salvando exemplo...');
         try {
-          const res = await fetch('http://localhost:5000/api/salvar-exemplo', {
+          const res = await fetch(`${BACKEND_URL}/api/salvar-exemplo`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ caption, mensagem: mensagemGerada })
