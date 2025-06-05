@@ -191,7 +191,19 @@ function MensagemRomantica() {
               value={mensagemEditada}
               onChange={e => setMensagemEditada(e.target.value)}
               rows={4}
-              style={{ width: '100%', borderRadius: 10, border: '1.5px solid #e255a3', padding: 8, fontSize: 16, fontFamily: 'inherit', marginBottom: 8, boxSizing: 'border-box', resize: 'vertical', display: 'block' }}
+              style={{
+                width: '100%',
+                borderRadius: 10,
+                border: '1.5px solid #e255a3',
+                padding: 8,
+                fontSize: '1.18rem',
+                fontFamily: 'Cormorant Garamond, Georgia, serif',
+                marginBottom: 8,
+                boxSizing: 'border-box',
+                resize: 'vertical',
+                display: 'block',
+                marginTop: 28 // aumenta o espaçamento acima do campo
+              }}
             />
             <div style={{ textAlign: 'right', width: '100%' }}>
               <button

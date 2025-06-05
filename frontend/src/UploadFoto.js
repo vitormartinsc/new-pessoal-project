@@ -100,11 +100,12 @@ function UploadFoto({ onUpload }) {
 
   return (
     <div className="upload-foto-wrapper">
-      <div className="modo-toggle">
+      <div className="modo-toggle" style={{ marginTop: 32, marginBottom: 18, justifyContent: 'center', display: 'flex' }}>
         <button
           type="button"
           className={modo === 'enviar' ? 'modo-btn ativo' : 'modo-btn'}
           onClick={() => setModo('enviar')}
+          style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: '1.18rem', fontWeight: 700, letterSpacing: 0.5 }}
         >
           Enviar Foto
         </button>
@@ -112,13 +113,14 @@ function UploadFoto({ onUpload }) {
           type="button"
           className={modo === 'treinar' ? 'modo-btn ativo' : 'modo-btn'}
           onClick={() => setModo('treinar')}
+          style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: '1.18rem', fontWeight: 700, letterSpacing: 0.5 }}
         >
           Treinar AI
         </button>
       </div>
-      <form className="upload-foto-form centralizada" onSubmit={handleSubmit}>
-        <h3>{modo === 'enviar' ? 'Enviar nova foto' : 'Treinar AI (exemplo)'}</h3>
-        <label htmlFor="upload-foto-input" className="custom-file-label">
+      <form className="upload-foto-form centralizada" onSubmit={handleSubmit} style={{ marginTop: 36, marginBottom: 32 }}>
+        <h3 style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: '1.25rem', color: '#ad1457', marginBottom: 18, marginTop: 0, letterSpacing: 0.5 }}>{modo === 'enviar' ? 'Enviar nova foto' : 'Treinar AI (exemplo)'}</h3>
+        <label htmlFor="upload-foto-input" className="custom-file-label" style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: '1.08rem' }}>
           {file ? 'Trocar foto' : 'Selecionar foto'}
           <input
             id="upload-foto-input"
@@ -130,7 +132,7 @@ function UploadFoto({ onUpload }) {
           />
         </label>
         {file && (
-          <div className="file-info">
+          <div className="file-info" style={{ fontFamily: 'Cormorant Garamond, Georgia, serif' }}>
             <span className="file-name">{file.name}</span>
             <button type="button" className="remove-file-btn" onClick={() => setFile(null)} title="Remover arquivo">×</button>
           </div>
@@ -142,7 +144,7 @@ function UploadFoto({ onUpload }) {
           onChange={handleCaptionChange}
           rows={3}
           maxLength={300}
-          style={{ resize: 'vertical', minHeight: 48 }}
+          style={{ resize: 'vertical', minHeight: 48, fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: '1.08rem' }}
         />
         {modo === 'treinar' && mensagemGerada && (
           <textarea
@@ -150,14 +152,14 @@ function UploadFoto({ onUpload }) {
             value={mensagemGerada}
             onChange={e => setMensagemGerada(e.target.value)}
             rows={5}
-            style={{ width: '100%', margin: '16px 0', minHeight: 80 }}
+            style={{ width: '100%', margin: '16px 0', minHeight: 80, fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: '1.08rem' }}
           />
         )}
-        <button type="submit" className="btn-upload-foto" disabled={loadingAI}>
+        <button type="submit" className="btn-upload-foto" disabled={loadingAI} style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: '1.08rem', marginTop: 8 }}>
           <FaCloudUploadAlt style={{ marginRight: 8, fontSize: 20 }} />
           {modo === 'enviar' ? 'Enviar' : loadingAI ? 'Gerando...' : (mensagemGerada ? 'Salvar exemplo' : 'Gerar mensagem')}
         </button>
-        <div className="status">{status}</div>
+        <div className="status" style={{ fontFamily: 'Cormorant Garamond, Georgia, serif' }}>{status}</div>
       </form>
     </div>
   );
