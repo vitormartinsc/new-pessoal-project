@@ -5,14 +5,12 @@ const fs = require('fs');
 const path = require('path');
 const cors = require('cors');
 const { Pool } = require('pg');
-const { uploadFotoToS3 } = require('./s3');
 
 const app = express();
 const PORT = 5000;
 
 app.use(cors());
 app.use(express.json());
-app.use('/fotos', express.static(path.join(__dirname, 'fotos')));
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL, // Defina DATABASE_URL no Railway
@@ -26,8 +24,18 @@ if (!fs.existsSync(fotosDir)) {
   fs.mkdirSync(fotosDir, { recursive: true });
 }
 
-// Configuração do multer para upload (memória para S3)
-const storage = multer.memoryStorage();
+// Configuração do multer para upload
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, fotosDir);
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    const base = path.basename(file.originalname, ext);
+    const unique = `${base}-${Date.now()}${ext}`;
+    cb(null, unique);
+  }
+});
 const upload = multer({ storage });
 const gerarMensagemUpload = multer();
 
@@ -50,8 +58,8 @@ async function addFoto(src, caption) {
 async function getMensagemDoDia() {
   const hoje = getHojeString();
   const { rows } = await pool.query('SELECT * FROM mensagem_do_dia WHERE data_do_dia = $1', [hoje]);
-  //return rows[0] || null; 
-  return null ; // teste para não usar banco de dados
+  return rows[0] || null; 
+  // null ; // teste para não usar banco de dados
 }
 
 async function salvarMensagemDoDia(mensagem, foto) {
@@ -72,16 +80,9 @@ app.post('/api/upload', upload.single('foto'), async (req, res) => {
     return res.status(400).json({ error: 'Foto e legenda são obrigatórias.' });
   }
   try {
-    // Upload para o S3
-    const ext = path.extname(req.file.originalname);
-    const base = path.basename(req.file.originalname, ext);
-    const unique = `${base}-${Date.now()}${ext}`;
-    const s3Result = await uploadFotoToS3(req.file.buffer, unique, req.file.mimetype);
-    const fotoUrl = s3Result.Location;
-    const newFoto = await addFoto(fotoUrl, req.body.caption);
+    const newFoto = await addFoto(`/fotos/${req.file.filename}`, req.body.caption);
     res.json({ success: true, foto: newFoto });
   } catch (err) {
-    console.error('Erro ao salvar foto no S3:', err);
     res.status(500).json({ error: 'Erro ao salvar foto.' });
   }
 });
