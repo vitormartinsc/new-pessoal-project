@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import MensagemRomantica from './MensagemRomantica';
 import UploadFoto from './UploadFoto';
