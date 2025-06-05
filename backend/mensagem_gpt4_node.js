@@ -1,14 +1,16 @@
 const OpenAI = require('openai');
-const fs = require('fs');
-const path = require('path');
+const { Pool } = require('pg');
 require('dotenv').config();
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-
-const EXEMPLOS_PATH = path.join(__dirname, 'exemplos.json');
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: process.env.PGSSLMODE === 'require' ? { rejectUnauthorized: false } : false
+});
 
 async function gerar_mensagem(caption) {
-  const exemplos = JSON.parse(fs.readFileSync(EXEMPLOS_PATH, 'utf-8'));
+  // Busca exemplos do banco de dados
+  const { rows: exemplos } = await pool.query('SELECT caption, mensagem FROM exemplos');
   let prompt =
     "Você é Vitor, namorado da Roberta. Escreva mensagens românticas no seu estilo, com um senso de humor, tem que ser algo mais espontêneo e ao mesmo tempo profundo.\n" +
     "Sobre a Roberta: ela é ama animais, é veterinária, tem um sorriso lindo. Ela é muito preocupada com os outros, cobra muito dela. Tem uma bondade super natural, não tem escrúpulos, tem um senso de humor questionável, gosta de piada de tiozão etc.\n\n" +

@@ -305,6 +305,37 @@ body, html, .mensagem-romantica-bg, .mensagem-romantica, .caption, .caption-outs
   }
 }
 
+.feedback-btn {
+  font-size: 2.2rem;
+  background: linear-gradient(135deg, #fff0f7 60%, #ffe0ec 100%);
+  border: 2px solid #e255a3;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 12px #f9c6d1a0, 0 1.5px 0 #fff inset;
+  cursor: pointer;
+  margin: 0 8px;
+  transition: transform 0.12s, box-shadow 0.12s, border 0.12s;
+  outline: none;
+}
+.feedback-btn-up {
+  border-color: #e255a3;
+}
+.feedback-btn-down {
+  border-color: #aaa;
+}
+.feedback-btn:hover, .feedback-btn:focus {
+  transform: scale(1.13) rotate(-6deg);
+  box-shadow: 0 4px 18px #e255a3a0, 0 2px 0 #fff inset;
+  border-width: 3px;
+}
+.feedback-btn span {
+  pointer-events: none;
+}
+
 @media (max-width: 600px) {
   .petalas-bg .petala {
     width: 22px;
