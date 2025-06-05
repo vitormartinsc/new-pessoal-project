@@ -59,7 +59,8 @@ async function addFoto(src, caption) {
 async function getMensagemDoDia() {
   const hoje = getHojeString();
   const { rows } = await pool.query('SELECT * FROM mensagem_do_dia WHERE data_do_dia = $1', [hoje]);
-  return rows[0] || null;
+  return rows[0] || null; 
+  // null ; // teste para não usar banco de dados
 }
 
 async function salvarMensagemDoDia(mensagem, foto) {
