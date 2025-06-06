@@ -5,12 +5,14 @@ const fs = require('fs');
 const path = require('path');
 const cors = require('cors');
 const { Pool } = require('pg');
+const morgan = require('morgan');
 
 const app = express();
 const PORT = 5000;
 
 app.use(cors());
 app.use(express.json());
+app.use(morgan('combined'));
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL, // Defina DATABASE_URL no Railway
