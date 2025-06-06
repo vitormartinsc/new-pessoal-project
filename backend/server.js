@@ -26,19 +26,8 @@ if (!fs.existsSync(fotosDir)) {
   fs.mkdirSync(fotosDir, { recursive: true });
 }
 
-// Configuração do multer para upload
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, fotosDir);
-  },
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    const base = path.basename(file.originalname, ext);
-    const unique = `${base}-${Date.now()}${ext}`;
-    cb(null, unique);
-  }
-});
-const upload = multer({ storage });
+// Configuração do multer para upload em memória (S3)
+const upload = multer({ storage: multer.memoryStorage() });
 const gerarMensagemUpload = multer();
 
 // Substituir leitura de fotos.json por consulta ao banco
@@ -82,9 +71,14 @@ app.post('/api/upload', upload.single('foto'), async (req, res) => {
     return res.status(400).json({ error: 'Foto e legenda são obrigatórias.' });
   }
   try {
-    const newFoto = await addFoto(`/fotos/${req.file.filename}`, req.body.caption);
+    // Faz upload para o S3
+    const { uploadFotoToS3 } = require('./s3');
+    const s3Result = await uploadFotoToS3(req.file.buffer, req.file.originalname, req.file.mimetype);
+    // Salva a URL do S3 no banco
+    const newFoto = await addFoto(s3Result.Location, req.body.caption);
     res.json({ success: true, foto: newFoto });
   } catch (err) {
+    console.error('Erro ao salvar foto:', err);
     res.status(500).json({ error: 'Erro ao salvar foto.' });
   }
 });
